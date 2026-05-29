@@ -1,41 +1,31 @@
 require("dotenv").config();
+
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const path = require("path");
 
 const User = require("./user");
 const Task = require("./task");
 
 const app = express();
 
-app.use(cors({
-    origin: "*"
-}));
-
+app.use(cors({ origin: "*" }));
 app.use(express.json());
+app.use(express.static(__dirname));
 
-/* =====================
-   ENV CONFIG (IMPORTANT)
-===================== */
-
-const MONGO_URI = process.env.MONGO_URI || 
-"mongodb://sujalkumar720g_db_user:TodoApp123@ac-7ccvu7d-shard-00-00.kdoopr4.mongodb.net:27017,ac-7ccvu7d-shard-00-01.kdoopr4.mongodb.net:27017,ac-7ccvu7d-shard-00-02.kdoopr4.mongodb.net:27017/?ssl=true&replicaSet=atlas-moyqtc-shard-0&authSource=admin&appName=Cluster0";
-
+const MONGO_URI = process.env.MONGO_URI;
 const JWT_SECRET = process.env.JWT_SECRET || "mysecretkey";
-
-/* =====================
-   DB CONNECTION
-===================== */
 
 mongoose.connect(MONGO_URI)
 .then(() => console.log("✅ MongoDB Connected"))
 .catch(err => console.log("❌ MongoDB Error:", err));
 
-/* =====================
-   AUTH ROUTES
-===================== */
+app.get("/", (req, res) => {
+    res.sendFile(path.join(__dirname, "index.html"));
+});
 
 // Register
 app.post("/register", async (req, res) => {
@@ -47,16 +37,10 @@ app.post("/register", async (req, res) => {
 
         const hashedPassword = await bcrypt.hash(password, 10);
 
-        const user = new User({
-            name,
-            email,
-            password: hashedPassword
-        });
-
+        const user = new User({ name, email, password: hashedPassword });
         await user.save();
 
         res.json({ message: "Registration Successful" });
-
     } catch (err) {
         res.status(500).json({ message: "Server Error" });
     }
@@ -73,26 +57,17 @@ app.post("/login", async (req, res) => {
         const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch) return res.status(400).json({ message: "Invalid password" });
 
-        const token = jwt.sign(
-            { id: user._id },
-            JWT_SECRET,
-            { expiresIn: "1d" }
-        );
+        const token = jwt.sign({ id: user._id }, JWT_SECRET, { expiresIn: "1d" });
 
         res.json({
             message: "Login Successful",
             token,
             userId: user._id
         });
-
     } catch (err) {
         res.status(500).json({ message: "Server Error" });
     }
 });
-
-/* =====================
-   TASK ROUTES
-===================== */
 
 // Create Task
 app.post("/task", async (req, res) => {
@@ -108,7 +83,6 @@ app.post("/task", async (req, res) => {
         await task.save();
 
         res.json({ message: "Task created", task });
-
     } catch (err) {
         res.status(500).json({ message: "Server Error" });
     }
@@ -133,13 +107,6 @@ app.delete("/task/:id", async (req, res) => {
         res.status(500).json({ message: "Server Error" });
     }
 });
-app.get("/", (req, res) => {
-    res.send("Todo App Backend Running on Azure");
-});
-
-/* =====================
-   START SERVER
-===================== */
 
 const PORT = process.env.PORT || 5000;
 
