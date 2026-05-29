@@ -6,26 +6,32 @@
 </head>
 <body>
 
-<h1>Todo App</h1>
+<div class="hero">
+    <h1>Todo Task Manager</h1>
+    <p>Organize your daily work easily</p>
+</div>
 
 <div class="container">
 
-<h2>Register</h2>
-<input id="regName" placeholder="Name">
-<input id="regEmail" placeholder="Email">
-<input id="regPassword" type="password" placeholder="Password">
-<button onclick="register()">Register</button>
+    <div class="card">
+        <img src="https://cdn-icons-png.flaticon.com/512/5087/5087579.png">
+        <h2>Register</h2>
+        <input id="regName" placeholder="Name">
+        <input id="regEmail" placeholder="Email">
+        <input id="regPassword" type="password" placeholder="Password">
+        <button onclick="register()">Register</button>
+    </div>
 
-<hr>
-
-<h2>Login</h2>
-<input id="email" placeholder="Email">
-<input id="password" type="password" placeholder="Password">
-<button onclick="login()">Login</button>
+    <div class="card">
+        <img src="https://cdn-icons-png.flaticon.com/512/295/295128.png">
+        <h2>Login</h2>
+        <input id="email" placeholder="Email">
+        <input id="password" type="password" placeholder="Password">
+        <button onclick="login()">Login</button>
+    </div>
 
 </div>
 
 <script src="app.js"></script>
-
 </body>
 </html>
