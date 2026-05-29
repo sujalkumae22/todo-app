@@ -1,0 +1,28 @@
+if (!localStorage.getItem("userId")) {
+    window.location.href = "index.html";
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<h1>Todo Dashboard</h1>
+
+<button onclick="logout()">Logout</button>
+
+<div class="container">
+
+<input id="task" placeholder="New Task">
+<button onclick="addTask()">Add Task</button>
+
+<ul id="list"></ul>
+
+</div>
+
+<script src="app.js"></script>
+
+</body>
+</html>
