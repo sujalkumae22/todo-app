@@ -133,6 +133,9 @@ app.delete("/task/:id", async (req, res) => {
         res.status(500).json({ message: "Server Error" });
     }
 });
+app.get("/", (req, res) => {
+    res.send("Todo App Backend Running on Azure");
+});
 
 /* =====================
    START SERVER
