@@ -1,4 +1,4 @@
-const API = "https://todo-app-sujal2201.azurewebsites.net";
+const API = "https://todo-app-sujal2201-afarbretb5h0bjfb.eastasia-01.azurewebsites.net";
 
 let userId = localStorage.getItem("userId");
 let token = localStorage.getItem("token");
